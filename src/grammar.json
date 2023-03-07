@@ -3843,6 +3843,27 @@
             ]
           },
           {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "ISEMPTY"
+              },
+              {
+                "type": "STRING",
+                "value": "("
+              },
+              {
+                "type": "SYMBOL",
+                "name": "set_bag_expr"
+              },
+              {
+                "type": "STRING",
+                "value": ")"
+              }
+            ]
+          },
+          {
             "type": "PREC_LEFT",
             "value": 2,
             "content": {
@@ -3942,6 +3963,10 @@
           {
             "type": "SYMBOL",
             "name": "constant"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "set_bag_expr"
           },
           {
             "type": "SEQ",

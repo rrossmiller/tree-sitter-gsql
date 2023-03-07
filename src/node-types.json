@@ -2167,6 +2167,10 @@
     "named": false
   },
   {
+    "type": "ISEMPTY",
+    "named": false
+  },
+  {
     "type": "JSONARRAY",
     "named": false
   },
