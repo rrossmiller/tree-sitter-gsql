@@ -23,7 +23,7 @@
         "test": "tree-sitter test"
     },
     "repository": {
-      "type": "git",
-      "url": "https://github.com/rrossmiller/tree-sitter-gsql"
+        "type": "git",
+        "url": "https://github.com/rrossmiller/tree-sitter-gsql"
     }
 }
