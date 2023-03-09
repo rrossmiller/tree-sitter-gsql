@@ -11,9 +11,9 @@ module.exports = grammar({
 		[$.real]
 	],
 	rules: {
-		gsql: ($) => repeat($._definition),
+		gsql: $ => repeat($._definition),
 
-		_definition: ($) =>
+		_definition: $ =>
 			choice(
 				$.create_query,
 				$.interpret_query
@@ -52,7 +52,7 @@ module.exports = grammar({
 			$.query_body
 		),
 
-		parameter_list: ($) => seq(
+		parameter_list: $ => seq(
 			"(",
 			repeat($.query_params),
 			")"
@@ -65,16 +65,16 @@ module.exports = grammar({
 			)
 		),
 
-		query_param: ($) => seq(
+		query_param: $ => seq(
 			$._type,
 			$.name,
 			optional(seq("=", $.digit))
 		),
 
-		query_body: ($) =>
+		query_body: $ =>
 			seq(
 				"{",
-				optional(repeat(seq($.typedef, ";"))),
+				optional(repeat($.typedef)),
 				// optional($.declaration_except_stmts),
 				repeat($.query_body_stmts),
 				"}"
@@ -86,7 +86,8 @@ module.exports = grammar({
 			"<",
 			repeat($.tuple_fields),
 			">",
-			field("tuple_type", $.name)
+			field("tupleType", $.name),
+			";"
 		),
 
 		tuple_fields: $ => seq(
@@ -617,13 +618,14 @@ module.exports = grammar({
 		expr: $ => prec.left(5, choice(
 			$.name,
 			$.global_accum_name,
-			seq($.name, ".", $.name),
-			seq($.name, ".", $.local_accum_name),
+			// seq($.name, ".", $.name),
+			// seq($.name, ".", $.local_accum_name),
+			$.name_dot,
 			seq($.name, ".", $.name, ".", $.name, "(", optional($.arg_list), ")"),
 			seq($.name, ".", $.name, "(", optional($.arg_list), ")", optional(seq(".", caseInsensitive("filter"), "(", $.condition, ")"))),
-			seq($.name, optional(seq("<", $._type, repeat(seq(",", $._type)), ">")), "(", optional(seq($.arg_list, ")"))),
-			seq($.name, ".", $.local_accum_name, repeat1(seq(".", $.name, "(", optional($.arg_list), ")")), optional(seq(".", $.name))),
-			seq($.global_accum_name, repeat1(seq(".", $.name, "(", optional($.arg_list), ")")), optional(seq(".", $.name))),
+			// seq($.name, optional(seq("<", $._type, repeat(seq(",", $._type)), ">")), "(", optional(seq($.arg_list, ")"))),
+			// seq($.name, ".", $.local_accum_name, repeat1(seq(".", $.name, "(", optional($.arg_list), ")")), optional(seq(".", $.name))),
+			// seq($.global_accum_name, repeat1(seq(".", $.name, "(", optional($.arg_list), ")")), optional(seq(".", $.name))),
 			seq(caseInsensitive("coalesce"), "(", optional($.arg_list), ")"),
 			seq($.aggregator, "(", optional(caseInsensitive("distinct")), $.set_bag_expr, ")"),
 			seq(caseInsensitive("isempty"), "(", $.set_bag_expr, ")"),
@@ -634,7 +636,7 @@ module.exports = grammar({
 			seq("[", $.arg_list, "]"),
 			$.constant,
 			$.set_bag_expr,
-			seq($.name, "(", $.arg_list, ")"),
+			$.func_call_stmt // seq($.name, "(", $.arg_list, ")"),
 		)),
 
 		condition: $ => prec.left(1, choice(
@@ -653,14 +655,22 @@ module.exports = grammar({
 		set_bag_expr: $ => prec.left(0, choice(
 			$.name,
 			$.global_accum_name,
-			seq($.name, ".", $.name),
-			seq($.name, ".", $.local_accum_name),
-			seq($.name, ".", $.local_accum_name, repeat(seq(".", $.name, "(", optional($.arg_list), ")"))),
-			seq($.name, ".", $.name, "(", optional($.arg_list), ")", optional(seq(".", caseInsensitive("filter"), "(", $.condition, ")"))),
-			seq($.global_accum_name, repeat(seq(".", $.name, "(", optional($.arg_list), ")"))),
+			// seq($.name, ".", $.name),
+			// seq($.name, ".", $.local_accum_name),
+			$.name_dot,
+			seq($.name_dot, repeat(seq(".", $.name, "(", optional($.arg_list), ")"))),
+			// seq($.name, ".", $.name, "(", optional($.arg_list), ")", optional(seq(".", caseInsensitive("filter"), "(", $.condition, ")"))),
+			// seq($.global_accum_name, repeat(seq(".", $.name, "(", optional($.arg_list), ")"))),
 			seq($.set_bag_expr, choice(caseInsensitive("union"), caseInsensitive("intersect"), caseInsensitive("minus")), $.set_bag_expr),
 			seq("(", $.arg_list, ")"),
 			seq("(", $.set_bag_expr, ")")
+		)),
+
+		name_dot: $ => prec.left(1, seq(
+			$.name,
+			".",
+			choice($.name, $.local_accum_name),
+			repeat($.name_dot)
 		)),
 
 		aggregator: $ => seq(
@@ -757,10 +767,16 @@ module.exports = grammar({
 		digit: $ => /\d/,
 		// number: $ => /\d+/,
 
-		string_literal: $ => seq(
-			'"',
-			repeat(/[^"&]/),
-			'"'
+		string_literal: $ => choice(
+			seq(
+				'"',
+				repeat(/[^"&]/),
+				'"'
+			), seq(
+				'\'',
+				repeat(/[^'&]/),
+				'\''
+			)
 		),
 		math_operator: $ => choice(
 			"*",

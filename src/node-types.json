@@ -539,10 +539,6 @@
           "named": true
         },
         {
-          "type": "base_type",
-          "named": true
-        },
-        {
           "type": "condition",
           "named": true
         },
@@ -555,11 +551,11 @@
           "named": true
         },
         {
-          "type": "global_accum_name",
+          "type": "func_call_stmt",
           "named": true
         },
         {
-          "type": "local_accum_name",
+          "type": "global_accum_name",
           "named": true
         },
         {
@@ -568,6 +564,10 @@
         },
         {
           "type": "name",
+          "named": true
+        },
+        {
+          "type": "name_dot",
           "named": true
         },
         {
@@ -1020,6 +1020,33 @@
     "type": "math_operator",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "name_dot",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "global_accum_name",
+          "named": true
+        },
+        {
+          "type": "local_accum_name",
+          "named": true
+        },
+        {
+          "type": "name",
+          "named": true
+        },
+        {
+          "type": "name_dot",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "numeric",
@@ -1477,19 +1504,15 @@
           "named": true
         },
         {
-          "type": "condition",
-          "named": true
-        },
-        {
           "type": "global_accum_name",
           "named": true
         },
         {
-          "type": "local_accum_name",
+          "type": "name",
           "named": true
         },
         {
-          "type": "name",
+          "type": "name_dot",
           "named": true
         },
         {
@@ -1719,7 +1742,7 @@
     "type": "typedef",
     "named": true,
     "fields": {
-      "tuple_type": {
+      "tupleType": {
         "multiple": false,
         "required": true,
         "types": [
@@ -1904,6 +1927,10 @@
   },
   {
     "type": "&",
+    "named": false
+  },
+  {
+    "type": "'",
     "named": false
   },
   {
