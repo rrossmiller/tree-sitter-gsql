@@ -4,6 +4,7 @@ module.exports = grammar({
 		/\s/,
 		$.line_comment,
 		$.block_comment,
+		$.newline
 	],
 
 	conflicts: $ => [
@@ -12,6 +13,11 @@ module.exports = grammar({
 	],
 	rules: {
 		gsql: $ => repeat($._definition),
+
+		newline: $ => token(seq(
+			'<_-_-_>',
+			'\n'
+		)),
 
 		_definition: $ =>
 			choice(
@@ -74,7 +80,7 @@ module.exports = grammar({
 		query_body: $ =>
 			seq(
 				"{",
-				optional(repeat($.typedef)),
+				repeat($.typedef),
 				// optional($.declaration_except_stmts),
 				repeat($.query_body_stmts),
 				"}"
@@ -108,9 +114,8 @@ module.exports = grammar({
 		),
 
 		query_body_stmt: $ => choice(
-			// these need to be repeat 1 because if the pattern is chosen, it must complete at least once
 			$.assign_stmt,
-			$.v_set_var_decl_stmt,
+			$.v_set_var_decl_stmt, //!book
 			$.decl_stmt,
 			$.l_accum_assign_stmt,
 			$.g_accum_assign_stmt,
@@ -141,9 +146,10 @@ module.exports = grammar({
 
 		v_set_var_decl_stmt: $ => seq(
 			$.name,
-			optional(
-				seq("(", $.name, ")")
-			),
+			// below conflicts with a function call
+			// optional(
+			// 	seq("(", $.name, ")")
+			// ),
 			"=",
 			choice($.seed_set,
 				$.simple_set,
@@ -765,7 +771,6 @@ module.exports = grammar({
 			seq(optional("-"), repeat1($.digit), seq(".", repeat1($.digit))),
 		),
 		digit: $ => /\d/,
-		// number: $ => /\d+/,
 
 		string_literal: $ => choice(
 			seq(
@@ -787,7 +792,9 @@ module.exports = grammar({
 			"<<",
 			">>",
 			"&",
-			" | "),
+			" | "
+		),
+
 		comparison_operator: $ => choice(
 			"<",
 			"<=",
