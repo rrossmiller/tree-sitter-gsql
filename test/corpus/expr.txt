@@ -1,0 +1,43 @@
+name and constant are handled in the query body tests
+===
+Expr
+===
+
+CREATE QUERY myQuery() FOR GRAPH MyGraph {
+    i = 0;
+    x.i = 1;
+}
+
+---
+
+(gsql 
+    (create_query 
+        queryName: (name) 
+        (parameter_list) 
+        graphName: (name) 
+        (query_body
+            (query_body_stmts
+                (query_body_stmt
+                    (assign_stmt
+                        (name)
+                        (expr
+                            (constant (numeric (integer (digit)))
+                            )
+                        )
+                    )
+                )
+            )
+            (query_body_stmts
+                (query_body_stmt
+                    (assign_stmt
+                        (name) (name)
+                        (expr
+                            (constant (numeric (integer (digit)))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

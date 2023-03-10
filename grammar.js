@@ -14,11 +14,6 @@ module.exports = grammar({
 	rules: {
 		gsql: $ => repeat($._definition),
 
-		newline: $ => token(seq(
-			'<_-_-_>',
-			'\n'
-		)),
-
 		_definition: $ =>
 			choice(
 				$.create_query,
@@ -754,7 +749,6 @@ module.exports = grammar({
 			caseInsensitive("gsql_uint_max"),
 			caseInsensitive("gsql_int_max"),
 			caseInsensitive("gsql_uint_min"),
-			seq(caseInsensitive("to_datetime"), "(", $.string_literal, ")")
 		),
 
 		numeric: $ => choice(
@@ -811,6 +805,12 @@ module.exports = grammar({
 			$.line_comment,
 			$.block_comment,
 		),
+
+		// this is used by grommet for keeping track of user's whitespace preference (leaving it be, that is)
+		newline: $ => token(seq(
+			'<_-_-_>',
+			'\n'
+		)),
 
 		line_comment: $ => token(seq(
 			'//', /.*/

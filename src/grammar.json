@@ -8,22 +8,6 @@
         "name": "_definition"
       }
     },
-    "newline": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "<_-_-_>"
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
-          }
-        ]
-      }
-    },
     "_definition": {
       "type": "CHOICE",
       "members": [
@@ -4458,27 +4442,6 @@
         {
           "type": "STRING",
           "value": "gsql_uint_min"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "to_datetime"
-            },
-            {
-              "type": "STRING",
-              "value": "("
-            },
-            {
-              "type": "SYMBOL",
-              "name": "string_literal"
-            },
-            {
-              "type": "STRING",
-              "value": ")"
-            }
-          ]
         }
       ]
     },
@@ -4728,6 +4691,22 @@
           "name": "block_comment"
         }
       ]
+    },
+    "newline": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "<_-_-_>"
+          },
+          {
+            "type": "STRING",
+            "value": "\n"
+          }
+        ]
+      }
     },
     "line_comment": {
       "type": "TOKEN",
