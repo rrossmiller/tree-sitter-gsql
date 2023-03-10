@@ -1,0 +1,86 @@
+=====
+Typedef Tuple
+=====
+
+CREATE QUERY myQuery() FOR GRAPH MyGraph {
+    TYPEDEF TUPLE <INT i, STRING j, DATETIME d> myType;
+}
+
+---
+
+(gsql 
+    (create_query 
+        queryName: (name) 
+        (parameter_list) 
+        graphName: (name) 
+        (query_body
+            (typedef 
+                (tuple_fields 
+                    (tuple_field (base_type) (name)) 
+                    (tuple_field (base_type) (name)) 
+                    (tuple_field (base_type) (name))
+                ) 
+                tupleType: (name)
+            )
+        )
+    )
+)
+
+===
+Query Body Assign (incl name and constant Exprs)
+===
+
+CREATE QUERY myQuery() FOR GRAPH MyGraph {
+    x = 0;
+    x.i = 1;
+    x = a;
+    x = "String literal";
+    x = TRUE;
+    x = FALSE;
+    x = TO_DATETIME("1900-01-01");
+}
+
+---
+
+(gsql 
+    (create_query 
+        queryName: (name) 
+        (parameter_list)
+        graphName: (name) 
+        (query_body 
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) 
+                        (expr (constant (numeric (integer (digit)))))))) 
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) (name) 
+                        (expr (constant (numeric (integer (digit)))))))) 
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) 
+                        (expr (name))))) 
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) 
+                        (expr (constant (string_literal)))))) 
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name)
+                        (expr (constant)))))
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) 
+                        (expr (constant))))) 
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) 
+                        (expr (func_call_stmt (name) (arg_list (expr (constant (string_literal)))))))))))
+)

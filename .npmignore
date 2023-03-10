@@ -1,0 +1,5 @@
+build
+target
+*.py
+gsql.ebnf
+*.sh

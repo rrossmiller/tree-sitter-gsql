@@ -1,0 +1,29 @@
+{
+    "name": "tree-sitter-gsql",
+    "version": "0.0.1",
+    "description": "gsql grammar for tree-sitter",
+    "main": "bindings/node",
+    "keywords": [
+        "parsing",
+        "incremental",
+        "gsql",
+        "tigergraph"
+    ],
+    "author": "Rob Rossmiller",
+    "license": "Apache-2.0",
+    "private": false,
+    "dependencies": {
+        "nan": "^2.12.1"
+    },
+    "devDependencies": {
+        "tree-sitter-cli": "^0.19.5"
+    },
+    "scripts": {
+        "build": "./build.sh",
+        "test": "tree-sitter test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rrossmiller/tree-sitter-gsql"
+    }
+}
