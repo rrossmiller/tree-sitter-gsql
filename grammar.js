@@ -766,10 +766,12 @@ module.exports = grammar({
 			optional('-'),
 			repeat1($.digit)
 		),
+
 		real: $ => choice(
 			seq(optional("-"), seq(".", repeat1($.digit))),
 			seq(optional("-"), repeat1($.digit), seq(".", repeat1($.digit))),
 		),
+
 		digit: $ => /\d/,
 
 		string_literal: $ => choice(

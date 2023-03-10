@@ -1,7 +1,5 @@
 import re
 
-# pattern = re.compile('("[a-z]*")')
-
 pattern = re.compile('caseInsensitive\("[a-z]*"\)')
 word_pattern = re.compile(r'("[a-z]*")')
 
