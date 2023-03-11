@@ -1,0 +1,8 @@
+===
+Vertex Set Var declaration_except_stmts
+===
+CREAT QUERY myQuery() FOR GRAPH MyGraph {
+    Src = {V.*};
+}
+
+---

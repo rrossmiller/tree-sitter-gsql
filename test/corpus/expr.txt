@@ -1,6 +1,6 @@
 name and constant are handled in the query body tests
 ===
-Expr
+Expr global_accum_name
 ===
 
 CREATE QUERY myQuery() FOR GRAPH MyGraph {

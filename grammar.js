@@ -110,8 +110,8 @@ module.exports = grammar({
 
 		query_body_stmt: $ => choice(
 			$.assign_stmt,
-			$.v_set_var_decl_stmt, //!book
-			$.decl_stmt,
+			$.v_set_var_decl_stmt,
+			$.decl_stmt, //!book
 			$.l_accum_assign_stmt,
 			$.g_accum_assign_stmt,
 			$.g_accum_accum_stmt,
@@ -542,7 +542,7 @@ module.exports = grammar({
 			choice("*", "all", seq($.name, repeat(seq(",", $.name))))
 		),
 
-		decl_stmt: $ => choice(
+		decl_stmt: $ => choice(//!book
 			$.base_decl_stmt,
 			$.accum_decl_stmt,
 			// $.file_decl_stmt
@@ -671,7 +671,7 @@ module.exports = grammar({
 			$.name,
 			".",
 			choice($.name, $.local_accum_name),
-			repeat($.name_dot)
+			repeat(seq(".", $.name))
 		)),
 
 		aggregator: $ => seq(

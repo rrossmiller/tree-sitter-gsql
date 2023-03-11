@@ -1036,10 +1036,6 @@
         {
           "type": "name",
           "named": true
-        },
-        {
-          "type": "name_dot",
-          "named": true
         }
       ]
     }

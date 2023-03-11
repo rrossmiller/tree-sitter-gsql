@@ -38,6 +38,9 @@ CREATE QUERY myQuery() FOR GRAPH MyGraph {
     x = TRUE;
     x = FALSE;
     x = TO_DATETIME("1900-01-01");
+    x = @@name;
+    x = name.@name.name();
+    x = name.name.name;
 }
 
 ---
@@ -82,5 +85,21 @@ CREATE QUERY myQuery() FOR GRAPH MyGraph {
                 (query_body_stmt 
                     (assign_stmt 
                         (name) 
-                        (expr (func_call_stmt (name) (arg_list (expr (constant (string_literal)))))))))))
+                        (expr (func_call_stmt (name) (arg_list (expr (constant (string_literal)))))))))
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) (expr (global_accum_name (name)))))) 
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) 
+                        (expr (set_bag_expr (name_dot (name) (local_accum_name (name))) (name))))))
+            (query_body_stmts 
+                (query_body_stmt 
+                    (assign_stmt 
+                        (name) 
+                        (expr (name_dot (name) (name) (name))))))
+        )
+    )
 )
