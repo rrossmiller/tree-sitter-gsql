@@ -414,10 +414,6 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "assign_stmt"
-        },
-        {
-          "type": "SYMBOL",
           "name": "v_set_var_decl_stmt"
         },
         {
@@ -2738,149 +2734,91 @@
       ]
     },
     "accum_decl_stmt": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "SYMBOL",
+          "name": "accum_type"
+        },
+        {
+          "type": "CHOICE",
           "members": [
-            {
-              "type": "SYMBOL",
-              "name": "accum_type"
-            },
             {
               "type": "SYMBOL",
               "name": "local_accum_name"
             },
             {
-              "type": "CHOICE",
+              "type": "SYMBOL",
+              "name": "global_accum_name"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
               "members": [
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "="
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "constant"
-                    }
-                  ]
+                  "type": "STRING",
+                  "value": "="
                 },
                 {
-                  "type": "BLANK"
+                  "type": "SYMBOL",
+                  "name": "constant"
                 }
               ]
             },
             {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "CHOICE",
                 "members": [
-                  {
-                    "type": "STRING",
-                    "value": ","
-                  },
                   {
                     "type": "SYMBOL",
                     "name": "local_accum_name"
                   },
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": "="
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "constant"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "accum_type"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "global_accum_name"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "="
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "constant"
-                    }
-                  ]
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ","
-                  },
-                  {
                     "type": "SYMBOL",
                     "name": "global_accum_name"
-                  },
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
                   {
-                    "type": "CHOICE",
+                    "type": "SEQ",
                     "members": [
                       {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": "="
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "constant"
-                          }
-                        ]
+                        "type": "STRING",
+                        "value": "="
                       },
                       {
-                        "type": "BLANK"
+                        "type": "SYMBOL",
+                        "name": "constant"
                       }
                     ]
+                  },
+                  {
+                    "type": "BLANK"
                   }
                 ]
               }
-            }
-          ]
+            ]
+          }
         }
       ]
     },
@@ -2892,7 +2830,7 @@
           "members": [
             {
               "type": "STRING",
-              "value": "sumAccum"
+              "value": "SUMACCUM"
             },
             {
               "type": "STRING",
@@ -3007,11 +2945,11 @@
         },
         {
           "type": "STRING",
-          "value": "bitwiseOraccum"
+          "value": "BITWISEORACCUM"
         },
         {
           "type": "STRING",
-          "value": "bitwiseAndaccum"
+          "value": "BITWISEANDACCUM"
         },
         {
           "type": "SEQ",
@@ -3142,8 +3080,11 @@
               "value": "("
             },
             {
-              "type": "SYMBOL",
-              "name": "simple_size"
+              "type": "REPEAT1",
+              "content": {
+                "type": "SYMBOL",
+                "name": "digit"
+              }
             },
             {
               "type": "STRING",
@@ -3206,7 +3147,7 @@
           "members": [
             {
               "type": "STRING",
-              "value": "groupByaccum"
+              "value": "GROUPBYACCUM"
             },
             {
               "type": "STRING",
@@ -3239,6 +3180,10 @@
                   }
                 ]
               }
+            },
+            {
+              "type": "STRING",
+              "value": ","
             },
             {
               "type": "SYMBOL",

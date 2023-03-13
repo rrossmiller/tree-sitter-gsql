@@ -58,11 +58,11 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "digit",
           "named": true
         },
         {
-          "type": "simple_size",
+          "type": "name",
           "named": true
         }
       ]
@@ -1289,10 +1289,6 @@
       "required": false,
       "types": [
         {
-          "type": "assign_stmt",
-          "named": true
-        },
-        {
           "type": "decl_stmt",
           "named": true
         },
@@ -2062,6 +2058,14 @@
     "named": false
   },
   {
+    "type": "BITWISEANDACCUM",
+    "named": false
+  },
+  {
+    "type": "BITWISEORACCUM",
+    "named": false
+  },
+  {
     "type": "BOOL",
     "named": false
   },
@@ -2151,6 +2155,10 @@
   },
   {
     "type": "GRAPH",
+    "named": false
+  },
+  {
+    "type": "GROUPBYACCUM",
     "named": false
   },
   {
@@ -2290,6 +2298,10 @@
     "named": false
   },
   {
+    "type": "SUMACCUM",
+    "named": false
+  },
+  {
     "type": "SYNTAX",
     "named": false
   },
@@ -2350,24 +2362,12 @@
     "named": false
   },
   {
-    "type": "bitwiseAndaccum",
-    "named": false
-  },
-  {
-    "type": "bitwiseOraccum",
-    "named": false
-  },
-  {
     "type": "block_comment",
     "named": true
   },
   {
     "type": "digit",
     "named": true
-  },
-  {
-    "type": "groupByaccum",
-    "named": false
   },
   {
     "type": "gsql_int_max",
@@ -2395,10 +2395,6 @@
   },
   {
     "type": "post-accum",
-    "named": false
-  },
-  {
-    "type": "sumAccum",
     "named": false
   },
   {

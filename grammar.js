@@ -555,24 +555,16 @@ module.exports = grammar({
 			repeat(seq(",", $.name, optional(seq("=", $.expr))))
 		),
 
-		accum_decl_stmt: $ => choice(
-			seq(
-				$.accum_type,
-				$.local_accum_name,
-				optional(seq("=", $.constant)),
-				repeat(
-					seq(
-						",",
-						$.local_accum_name,
-						optional(seq("=", $.constant))
-					)
+		accum_decl_stmt: $ => seq(
+			$.accum_type,
+			choice($.local_accum_name, $.global_accum_name),
+			optional(seq("=", $.constant)),
+			repeat(
+				seq(
+					",",
+					choice($.local_accum_name, $.global_accum_name),
+					optional(seq("=", $.constant))
 				)
-			),
-			seq(
-				$.accum_type,
-				$.global_accum_name,
-				optional(seq("=", $.constant)),
-				repeat(seq(",", $.global_accum_name, optional(seq("=", $.constant))))
 			)
 		),
 
@@ -585,14 +577,14 @@ module.exports = grammar({
 			caseInsensitive("avgaccum"),
 			caseInsensitive("oraccum"),
 			caseInsensitive("andaccum"),
-			caseInsensitive("bitwiseOraccum"),
-			caseInsensitive("bitwiseAndaccum"),
+			caseInsensitive("bitwiseoraccum"),
+			caseInsensitive("bitwiseandaccum"),
 			seq(caseInsensitive("listaccum"), "<", $._type, ">"),
 			seq(caseInsensitive("setaccum"), "<", $._element_type, ">"),
 			seq(caseInsensitive("bagaccum"), "<", $._element_type, ">"),
 			seq(caseInsensitive("mapaccum"), "<", $._element_type, ",", choice($.base_type, $.accum_type, $.name), ">"),
 			seq(caseInsensitive("heapaccum"), "<", $.name, ">", "(", $.simple_size, ",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")), repeat(seq(",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")))), ")"),
-			seq(caseInsensitive("groupByaccum"), "<", $._element_type, $.name, repeat(seq(",", $._element_type, $.name)), $.accum_type, $.name, repeat(seq(",", $.accum_type, $.name)), ">"),
+			seq(caseInsensitive("groupbyaccum"), "<", $._element_type, $.name, repeat(seq(",", $._element_type, $.name)), $.accum_type, $.name, repeat(seq(",", $.accum_type, $.name)), ">"),
 			seq(caseInsensitive("arrayaccum"), "<", $.name, ">")
 		),
 
@@ -740,7 +732,11 @@ module.exports = grammar({
 		),
 
 		name: $ => /[\p{L}_$][\p{L}\p{Nd}_$]*/, // thanks, java --> https://github.com/tree-sitter/tree-sitter-java/blob/master/grammar.js#:~:text=%5B%5Cp%7BL%7D_%24%5D%5B%5Cp%7BL%7D%5Cp%7BNd%7D_%24%5D*
-
+		// name: $ => { // thanks, js --> https://github.com/tree-sitter/tree-sitter-javascript/blob/master/grammar.js
+		// 	const alpha = /[^\x00-\x1F\s\p{Zs}0-9:;`"'@#.,|^&<=>+\-*/\\%?!~()\[\]{}\uFEFF\u2060\u200B]|\\u[0-9a-fA-F]{4}|\\u\{[0-9a-fA-F]+\}/
+		// 	const alphanumeric = /[^\x00-\x1F\s\p{Zs}:;`"'@#.,|^&<=>+\-*/\\%?!~()\[\]{}\uFEFF\u2060\u200B]|\\u[0-9a-fA-F]{4}|\\u\{[0-9a-fA-F]+\}/
+		// 	return token(seq(alpha, repeat(alphanumeric)))
+		// },
 		constant: $ => choice(
 			$.numeric,
 			$.string_literal,
