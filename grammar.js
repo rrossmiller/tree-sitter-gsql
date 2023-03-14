@@ -111,10 +111,11 @@ module.exports = grammar({
 		query_body_stmt: $ => choice(
 			$.assign_stmt,
 			$.v_set_var_decl_stmt,
-			$.decl_stmt, //!book
+			$.decl_stmt,
 			$.l_accum_assign_stmt,
 			$.g_accum_assign_stmt,
 			$.g_accum_accum_stmt,
+			//!book
 			$.func_call_stmt,
 			$.select_stmt,
 			$.query_body_case_stmt,
@@ -194,6 +195,7 @@ module.exports = grammar({
 			field("plus_equal", "+="),
 			$.expr
 		),
+		//!book
 
 		func_call_stmt: $ => choice(
 			seq(
@@ -542,7 +544,7 @@ module.exports = grammar({
 			choice("*", "all", seq($.name, repeat(seq(",", $.name))))
 		),
 
-		decl_stmt: $ => choice(//!book
+		decl_stmt: $ => choice(
 			$.base_decl_stmt,
 			$.accum_decl_stmt,
 			// $.file_decl_stmt
