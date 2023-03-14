@@ -583,8 +583,8 @@ module.exports = grammar({
 			seq(caseInsensitive("setaccum"), "<", $._element_type, ">"),
 			seq(caseInsensitive("bagaccum"), "<", $._element_type, ">"),
 			seq(caseInsensitive("mapaccum"), "<", $._element_type, ",", choice($.base_type, $.accum_type, $.name), ">"),
-			seq(caseInsensitive("heapaccum"), "<", $.name, ">", "(", $.simple_size, ",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")), repeat(seq(",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")))), ")"),
-			seq(caseInsensitive("groupbyaccum"), "<", $._element_type, $.name, repeat(seq(",", $._element_type, $.name)), $.accum_type, $.name, repeat(seq(",", $.accum_type, $.name)), ">"),
+			seq(caseInsensitive("heapaccum"), "<", $.name, ">", "(", repeat1($.digit), ",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")), repeat(seq(",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")))), ")"),
+			seq(caseInsensitive("groupbyaccum"), "<", $._element_type, $.name, repeat(seq(",", $._element_type, $.name)), ",", $.accum_type, $.name, repeat(seq(",", $.accum_type, $.name)), ">"),
 			seq(caseInsensitive("arrayaccum"), "<", $.name, ">")
 		),
 
