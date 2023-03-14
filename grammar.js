@@ -115,9 +115,9 @@ module.exports = grammar({
 			$.l_accum_assign_stmt,
 			$.g_accum_assign_stmt,
 			$.g_accum_accum_stmt,
-			//!book
 			$.func_call_stmt,
-			$.select_stmt,
+			//!book
+			$._select_stmt,
 			$.query_body_case_stmt,
 			$.query_body_if_stmt,
 			$.query_body_while_stmt,
@@ -149,7 +149,7 @@ module.exports = grammar({
 			"=",
 			choice($.seed_set,
 				$.simple_set,
-				$.select_stmt
+				$._select_stmt
 			)
 		),
 
@@ -195,7 +195,6 @@ module.exports = grammar({
 			field("plus_equal", "+="),
 			$.expr
 		),
-		//!book
 
 		func_call_stmt: $ => choice(
 			seq(
@@ -217,7 +216,8 @@ module.exports = grammar({
 			)
 		),
 
-		select_stmt: $ => choice(
+		//!book
+		_select_stmt: $ => choice(
 			$.gsql_select_block,
 			// $.sqlSelectBlock 
 		),
@@ -233,6 +233,7 @@ module.exports = grammar({
 			// optional($.order_clause),
 			optional($.limit_clause),
 		),
+
 		gsql_select_clause: $ => seq(
 			$.name,
 			"=",
@@ -393,6 +394,7 @@ module.exports = grammar({
 				seq($.expr, caseInsensitive("offset"), $.expr)
 			)
 		),
+		//!book
 
 		path_pattern: $ => prec(1, seq(
 			$.step_source_set,
@@ -430,6 +432,7 @@ module.exports = grammar({
 		// 	$.step_vertex_set,
 		// 	optional(seq("-", "(", $.step_edge_set, ")", "-", $.step_vertex_set))
 		// ),
+		//!book
 
 		step: $ => seq(
 			$.step_source_set,
@@ -443,6 +446,7 @@ module.exports = grammar({
 				$.step_vertex_set
 			))
 		),
+		
 		step_source_set: $ => prec(1, seq(
 			field('vertexSetName', $.name),
 			optional(seq(":", field("vertexAlias", $.name)))
