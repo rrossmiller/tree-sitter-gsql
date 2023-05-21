@@ -116,7 +116,6 @@ module.exports = grammar({
 			$.g_accum_assign_stmt,
 			$.g_accum_accum_stmt,
 			$.func_call_stmt,
-			//!book
 			$._select_stmt,
 			$.query_body_case_stmt,
 			$.query_body_if_stmt,
@@ -216,12 +215,12 @@ module.exports = grammar({
 			)
 		),
 
-		//!book
 		_select_stmt: $ => choice(
 			$.gsql_select_block,
 			// $.sqlSelectBlock 
 		),
 
+		// BOOK:
 		gsql_select_block: $ => seq(
 			$.gsql_select_clause,
 			$.from_clause,
@@ -245,7 +244,7 @@ module.exports = grammar({
 			caseInsensitive("from"),
 			choice(
 				$.step,
-				// $.step_v2,
+				// $.step_v2, // fixme that comma below is going to mess things up. do step v2
 				seq($.path_pattern, repeat(seq(",", $.path_pattern))),
 			)
 		),
@@ -394,7 +393,7 @@ module.exports = grammar({
 				seq($.expr, caseInsensitive("offset"), $.expr)
 			)
 		),
-		//!book
+		//BOOK::
 
 		path_pattern: $ => prec(1, seq(
 			$.step_source_set,
@@ -432,21 +431,20 @@ module.exports = grammar({
 		// 	$.step_vertex_set,
 		// 	optional(seq("-", "(", $.step_edge_set, ")", "-", $.step_vertex_set))
 		// ),
-		//!book
+		// BOOK:
 
 		step: $ => seq(
 			$.step_source_set,
 			optional(seq(
-				"-",
-				"(",
+				// token(seq("-", "(")),
+				"-", "(",
 				$.step_edge_set,
-				")",
-				"-",
-				optional('>'),
+				// token(seq(")", "-", optional('>'))),
+				")", "-", optional('>'),
 				$.step_vertex_set
 			))
 		),
-		
+
 		step_source_set: $ => prec(1, seq(
 			field('vertexSetName', $.name),
 			optional(seq(":", field("vertexAlias", $.name)))
