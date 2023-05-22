@@ -146,6 +146,7 @@ CREATE OR REPLACE QUERY myQuery()  FOR GRAPH MyGraph {
 ===
 g_accum_assign_stmt
 ===
+
 CREATE OR REPLACE QUERY myQuery()  FOR GRAPH MyGraph {
     @@ac1 = n;
     @@ac1 += @@ac;

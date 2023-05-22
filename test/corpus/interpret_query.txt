@@ -1,29 +1,27 @@
 =====
-Create Query
+INTERPRET Query
 =====
 
-CREATE QUERY myQuery() FOR GRAPH MyGraph {}
+INTERPRET QUERY () FOR GRAPH MyGraph {}
 
 ---
 
 (gsql 
-    (create_query 
-        queryName: (name) 
+    (interpret_query 
         (parameter_list) 
         graphName: (name) 
         (query_body)))
 
 =====
-Create Query with Params
+INTERPRET Query with Params
 =====
 
-CREATE QUERY myQuery(INT i, STRING j, DATETIME d) FOR GRAPH MyGraph {}
+INTERPRET QUERY (INT i, STRING j, DATETIME d) FOR GRAPH MyGraph {}
 
 ---
 
 (gsql 
-    (create_query 
-        queryName: (name) 
+    (interpret_query 
         (parameter_list 
             (query_params 
                 (query_param (base_type) (name))
@@ -34,16 +32,15 @@ CREATE QUERY myQuery(INT i, STRING j, DATETIME d) FOR GRAPH MyGraph {}
 
 
 =====
-Create OR REPLACE Distributed Query SYNTAX V2
+INTERPRET Query SYNTAX V2
 =====
 
-CREATE OR REPLACE DISTRIBUTED QUERY myQuery() FOR GRAPH MyGraph SYNTAX V2 {}
+INTERPRET QUERY () FOR GRAPH MyGraph SYNTAX V2 {}
 
 ---
 
 (gsql 
-    (create_query 
-        queryName: (name) 
+    (interpret_query 
         (parameter_list)
         graphName: (name) 
         (query_body))) 

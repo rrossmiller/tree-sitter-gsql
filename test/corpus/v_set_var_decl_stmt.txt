@@ -5,6 +5,7 @@ Vertex Set Var Decl Stmt: seed_set
 CREATE OR REPLACE QUERY myQuery() FOR GRAPH MyGraph {
     Src = {_};
     Src = {ANY};
+    Src = {V.*, S.*, T};
     Src = {@@glbl};
     Src = {V.*};
     Src = {a, b};
@@ -30,6 +31,14 @@ CREATE OR REPLACE QUERY myQuery() FOR GRAPH MyGraph {
             (name)
             (seed_set
               (seed)))))
+      (query_body_stmts
+        (query_body_stmt
+          (v_set_var_decl_stmt
+            (name)
+            (seed_set
+              (seed (name))
+              (seed (name))
+              (seed (name))))))
       (query_body_stmts
         (query_body_stmt
           (v_set_var_decl_stmt
