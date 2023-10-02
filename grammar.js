@@ -117,7 +117,6 @@ module.exports = grammar({
             ';'
         ),
 
-        // BOOK:root: you are testing this here
         query_body_stmt: $ => choice(
             $.assign_stmt, // tested
             $.v_set_var_decl_stmt, // tested
@@ -127,16 +126,16 @@ module.exports = grammar({
             $.g_accum_accum_stmt, // tested
             $.func_call_stmt, // tested
             $._select_stmt, // tested
-            $.query_body_case_stmt, //testing
-            $.query_body_if_stmt,
-            $.query_body_while_stmt,
-            $.query_body_for_each_stmt,
+            $.query_body_case_stmt, //tested
+            $.query_body_if_stmt, //tested
+            $.query_body_while_stmt, // tested
+            $.query_body_for_each_stmt, //tested
             // caseInsensitive("break"),
             // caseInsensitive("continue"),
             // updateStmt ,
             // insertStmt ,
             // queryBodyDeleteStmt ,
-            $.print_stmt,
+            $.print_stmt, //tested
             // printlnStmt ,
             // logStmt ,
             // returnStmt, 
@@ -395,7 +394,8 @@ module.exports = grammar({
                     field("iterationVar", choice($.name, $.local_accum_name, $.global_accum_name)),
                     seq("(", field("keyVar", $.name), repeat1(seq(",", field("valueVar", $.name))), ")")
                 ),
-                seq(choice(caseInsensitive("in"), ":"), $.set_bag_expr)
+                seq(choice(caseInsensitive("in"), ":"), 
+                $.set_bag_expr)
             ),
             seq(
                 field("iterationVar", choice($.name, $.local_accum_name, $.global_accum_name)),

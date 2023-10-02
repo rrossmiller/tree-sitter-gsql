@@ -21,6 +21,6 @@ function pprintTree(lispTree) {
 }
 
 const t = pprintTree(`\
-(gsql (create_query (name) (parameter_list) (name) (query_body (query_body_stmts (query_body_stmt (query_body_case_stmt (condition (expr (name))) (query_body_stmts (query_body_stmt (gsql_select_block (gsql_select_clause (name) (name)) (from_clause (path_pattern (step_source_set (name) (name))))))) (query_body_stmts (query_body_stmt (func_call_stmt (name))))))))))
+(gsql (create_query (name) (parameter_list) (name) (query_body (query_body_stmts (query_body_stmt (print_stmt (print_expr (expr (expr (constant (numeric (integer (digit))))) (math_operator) (expr (constant (numeric (integer (digit)))))))))) (query_body_stmts (query_body_stmt (print_stmt (print_expr (expr (name))) (print_expr (expr (name)))))) (query_body_stmts (query_body_stmt (print_stmt (print_expr (v_expr_set (expr (name)) (v_set_proj (expr (name_dot (name) (name))) (name)) (v_set_proj (expr (name_dot (name) (name))))))))) (query_body_stmts (query_body_stmt (print_stmt (print_expr (expr (name))) (condition (expr (name)) (comparison_operator) (expr (constant (numeric (integer (digit))))))))) (query_body_stmts (query_body_stmt (print_stmt (print_expr (expr (name))) (name)))))))
 `);
 console.log(t);
