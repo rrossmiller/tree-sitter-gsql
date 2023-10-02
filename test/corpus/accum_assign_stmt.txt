@@ -1,4 +1,49 @@
 ===
+Assign
+===
+CREATE QUERY myQuery() FOR GRAPH MyGraph {
+    V = SELECT s FROM S:s
+          ACCUM x = 10,
+                y = x;
+
+}
+---
+
+(gsql 
+  (create_query 
+    (name) 
+    (parameter_list) 
+    (name) 
+    (query_body 
+      (query_body_stmts 
+        (query_body_stmt 
+          (gsql_select_block 
+            (gsql_select_clause 
+              (name) 
+              (name)) 
+            (from_clause 
+              (path_pattern 
+                (step_source_set 
+                  (name) 
+                  (name)))) 
+            (accum_clause 
+              (dml_sub_stmt_list 
+                (dml_sub_stmt 
+                  (assign_stmt 
+                    (name) 
+                    (expr 
+                      (constant 
+                        (numeric 
+                          (integer 
+                            (digit) 
+                            (digit))))))) 
+                (dml_sub_stmt 
+                  (assign_stmt 
+                    (name) 
+                    (expr 
+                      (name))))))))))))
+
+===
 l_accum_assign_stmt
 ===
 CREATE OR REPLACE QUERY myQuery()  FOR GRAPH MyGraph {

@@ -411,6 +411,10 @@
       "required": true,
       "types": [
         {
+          "type": "assign_stmt",
+          "named": true
+        },
+        {
           "type": "attr_accum_stmt",
           "named": true
         },
@@ -1279,7 +1283,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "assign_stmt",

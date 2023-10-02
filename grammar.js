@@ -117,6 +117,7 @@ module.exports = grammar({
             ';'
         ),
 
+        // BOOK:root: you are testing this here
         query_body_stmt: $ => choice(
             $.assign_stmt, // tested
             $.v_set_var_decl_stmt, // tested
@@ -125,13 +126,13 @@ module.exports = grammar({
             $.g_accum_assign_stmt, // tested
             $.g_accum_accum_stmt, // tested
             $.func_call_stmt, // tested
-            $._select_stmt,
-            $.query_body_case_stmt,
+            $._select_stmt, // tested
+            $.query_body_case_stmt, //testing
             $.query_body_if_stmt,
             $.query_body_while_stmt,
             $.query_body_for_each_stmt,
-            caseInsensitive("break"),
-            caseInsensitive("continue"),
+            // caseInsensitive("break"),
+            // caseInsensitive("continue"),
             // updateStmt ,
             // insertStmt ,
             // queryBodyDeleteStmt ,
@@ -238,14 +239,13 @@ module.exports = grammar({
             // $.sqlSelectBlock 
         ),
 
-        // BOOK:root: you are testing this here
         gsql_select_block: $ => seq(
             $.gsql_select_clause,
             $.from_clause,
             // optional($.sample_clause),
             optional($.where_clause), 
             optional($.accum_clause), 
-            repeat($.post_accum_clause),  
+            repeat($.post_accum_clause), 
             // optional($.having_clause),
             // optional($.order_clause),
             optional($.limit_clause),
@@ -284,7 +284,7 @@ module.exports = grammar({
         ),
 
         dml_sub_stmt: $ => choice(
-            // $.assign_stmt, 
+            $.assign_stmt, 
             $.func_call_stmt,
             $.g_accum_accum_stmt,
             $.l_accum_accum_stmt,

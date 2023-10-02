@@ -21,6 +21,6 @@ function pprintTree(lispTree) {
 }
 
 const t = pprintTree(`\
-(gsql (create_query (name) (parameter_list) (name) (query_body (query_body_stmts (query_body_stmt (gsql_select_block (gsql_select_clause (name) (name)) (from_clause (path_pattern (step_source_set (name) (name)))) (limit_clause (expr (constant (numeric (integer (digit) (digit) (digit) (digit) (digit))))) (expr (expr (name)) (math_operator) (expr (constant (numeric (integer (digit) (digit)))))))))))))
+(gsql (create_query (name) (parameter_list) (name) (query_body (query_body_stmts (query_body_stmt (query_body_case_stmt (condition (expr (name))) (query_body_stmts (query_body_stmt (gsql_select_block (gsql_select_clause (name) (name)) (from_clause (path_pattern (step_source_set (name) (name))))))) (query_body_stmts (query_body_stmt (func_call_stmt (name))))))))))
 `);
 console.log(t);
