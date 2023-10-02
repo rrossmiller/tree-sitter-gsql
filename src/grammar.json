@@ -1098,10 +1098,6 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "assign_stmt"
-        },
-        {
-          "type": "SYMBOL",
           "name": "func_call_stmt"
         },
         {
@@ -1139,14 +1135,6 @@
         {
           "type": "SYMBOL",
           "name": "dml_sub_for_each_stmt"
-        },
-        {
-          "type": "PATTERN",
-          "value": "[bB][rR][eE][aA][kK]"
-        },
-        {
-          "type": "PATTERN",
-          "value": "[cC][oO][nN][tT][iI][nN][uU][eE]"
         }
       ]
     },
@@ -1299,29 +1287,29 @@
       ]
     },
     "dml_sub_if_stmt": {
-      "type": "PREC_LEFT",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "[iI][fF]"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "condition"
-          },
-          {
-            "type": "PATTERN",
-            "value": "[tT][hH][eE][nN]"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "dml_sub_stmt_list"
-          },
-          {
-            "type": "REPEAT",
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[iI][fF]"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "condition"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[tT][hH][eE][nN]"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dml_sub_stmt_list"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "PREC_LEFT",
+            "value": 1,
             "content": {
               "type": "SEQ",
               "members": [
@@ -1347,157 +1335,90 @@
                 }
               ]
             }
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "[eE][lL][sS][eE]"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "dml_sub_stmt_list"
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
-            "type": "PATTERN",
-            "value": "[eE][nN][dD]"
           }
-        ]
-      }
-    },
-    "dml_sub_case_stmt": {
-      "type": "CHOICE",
-      "members": [
+        },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[cC][aA][sS][eE]"
-            },
-            {
-              "type": "REPEAT1",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "[wW][hH][eE][nN]"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "condition"
-                  },
-                  {
-                    "type": "PATTERN",
-                    "value": "[tT][hH][eE][nN]"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "dml_sub_stmt_list"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "CHOICE",
+              "type": "SEQ",
               "members": [
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "PATTERN",
-                      "value": "[eE][lL][sS][eE]"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "dml_sub_stmt_list"
-                    }
-                  ]
+                  "type": "PATTERN",
+                  "value": "[eE][lL][sS][eE]"
                 },
                 {
-                  "type": "BLANK"
+                  "type": "SYMBOL",
+                  "name": "dml_sub_stmt_list"
                 }
               ]
             },
             {
-              "type": "PATTERN",
-              "value": "[eE][nN][dD]"
+              "type": "BLANK"
             }
           ]
         },
         {
-          "type": "SEQ",
+          "type": "PATTERN",
+          "value": "[eE][nN][dD]"
+        }
+      ]
+    },
+    "dml_sub_case_stmt": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[cC][aA][sS][eE]"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[wW][hH][eE][nN]"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "condition"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[tT][hH][eE][nN]"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "dml_sub_stmt_list"
+              }
+            ]
+          }
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[cC][aA][sS][eE]"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "expr"
-            },
-            {
-              "type": "REPEAT1",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "[wW][hH][eE][nN]"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "constant"
-                  },
-                  {
-                    "type": "PATTERN",
-                    "value": "[tT][hH][eE][nN]"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "dml_sub_stmt_list"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "CHOICE",
+              "type": "SEQ",
               "members": [
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "PATTERN",
-                      "value": "[eE][lL][sS][eE]"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "dml_sub_stmt_list"
-                    }
-                  ]
+                  "type": "PATTERN",
+                  "value": "[eE][lL][sS][eE]"
                 },
                 {
-                  "type": "BLANK"
+                  "type": "SYMBOL",
+                  "name": "dml_sub_stmt_list"
                 }
               ]
             },
             {
-              "type": "PATTERN",
-              "value": "[eE][nN][dD]"
+              "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "PATTERN",
+          "value": "[eE][nN][dD]"
         }
       ]
     },
@@ -4355,10 +4276,6 @@
         {
           "type": "PATTERN",
           "value": "[sS][tT][rR][iI][nN][gG]"
-        },
-        {
-          "type": "PATTERN",
-          "value": "[bB][oO][oO][lL]"
         },
         {
           "type": "SEQ",

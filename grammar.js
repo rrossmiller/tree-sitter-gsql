@@ -244,8 +244,8 @@ module.exports = grammar({
             $.from_clause,
             // optional($.sample_clause),
             optional($.where_clause), 
-            optional($.accum_clause), // testing 
-            repeat($.post_accum_clause),
+            optional($.accum_clause), 
+            repeat($.post_accum_clause),  // testing 
             // optional($.having_clause),
             // optional($.order_clause),
             optional($.limit_clause),
@@ -277,25 +277,26 @@ module.exports = grammar({
             caseInsensitive("accum"),
             $.dml_sub_stmt_list
         ),
+
         dml_sub_stmt_list: $ => seq(
             $.dml_sub_stmt,
             repeat(seq(",", $.dml_sub_stmt))
         ),
 
         dml_sub_stmt: $ => choice(
-            $.assign_stmt,
+            // $.assign_stmt, 
             $.func_call_stmt,
             $.g_accum_accum_stmt,
             $.l_accum_accum_stmt,
-            $.attr_accum_stmt,
+            $.attr_accum_stmt, 
             $.v_accum_func_call,
             $.local_var_decl_stmt,
             $.dml_sub_case_stmt,
-            $.dml_sub_if_stmt,
+            $.dml_sub_if_stmt, 
             $.dml_sub_while_stmt,
             $.dml_sub_for_each_stmt,
-            caseInsensitive("break"),
-            caseInsensitive("continue"),
+            // caseInsensitive("break"),
+            // caseInsensitive("continue"),
             // insertStmt,
             // dmlSubDeleteStmt,
             // printlnStmt,
@@ -336,31 +337,40 @@ module.exports = grammar({
             "=",
             $.expr
         ),
-        dml_sub_if_stmt: $ => prec.left(1, seq(
+
+        dml_sub_if_stmt: $ =>  
+            seq(
             caseInsensitive("if"),
             $.condition,
             caseInsensitive("then"),
             $.dml_sub_stmt_list,
-            repeat(seq(caseInsensitive("else"), caseInsensitive("if"), $.condition, caseInsensitive("then"), $.dml_sub_stmt_list)),
+            repeat(prec.left(1,
+                seq(
+                    caseInsensitive("else"),
+                    caseInsensitive("if"), 
+                    $.condition, 
+                    caseInsensitive("then"), 
+                    $.dml_sub_stmt_list
+                ))),
             optional(seq(caseInsensitive("else"), $.dml_sub_stmt_list)),
             caseInsensitive("end")
-        )),
+        ),
 
-        dml_sub_case_stmt: $ => choice(
+        dml_sub_case_stmt: $ => //choice(
             seq(
                 caseInsensitive("case"),
                 repeat1(seq(caseInsensitive("when"), $.condition, caseInsensitive("then"), $.dml_sub_stmt_list)),
                 optional(seq(caseInsensitive("else"), $.dml_sub_stmt_list)),
                 caseInsensitive("end")
             ),
-            seq(
-                caseInsensitive("case"),
-                $.expr,
-                repeat1(seq(caseInsensitive("when"), $.constant, caseInsensitive("then"), $.dml_sub_stmt_list)),
-                optional(seq(caseInsensitive("else"), $.dml_sub_stmt_list)),
-                caseInsensitive("end")
-            )
-        ),
+            // seq(
+            //     caseInsensitive("case"),
+            //     $.expr,
+            //     repeat1(seq(caseInsensitive("when"), $.constant, caseInsensitive("then"), $.dml_sub_stmt_list)),
+            //     optional(seq(caseInsensitive("else"), $.dml_sub_stmt_list)),
+            //     caseInsensitive("end")
+            // )
+        //),
 
         dml_sub_while_stmt: $ => seq(
             caseInsensitive("while"),
@@ -748,7 +758,7 @@ module.exports = grammar({
             caseInsensitive("float"),
             caseInsensitive("double"),
             caseInsensitive("string"),
-            caseInsensitive("bool"),
+            // caseInsensitive("bool"),
             seq(caseInsensitive("vertex"), optional(seq("<", $.name, ">"))),
             caseInsensitive("edge"),
             caseInsensitive("jsonobject"),
@@ -762,6 +772,7 @@ module.exports = grammar({
         // 	const alphanumeric = /[^\x00-\x1F\s\p{Zs}:;`"'@#.,|^&<=>+\-*/\\%?!~()\[\]{}\uFEFF\u2060\u200B]|\\u[0-9a-fA-F]{4}|\\u\{[0-9a-fA-F]+\}/
         // 	return token(seq(alpha, repeat(alphanumeric)))
         // },
+
         constant: $ => choice(
             $.numeric,
             $.string_literal,
