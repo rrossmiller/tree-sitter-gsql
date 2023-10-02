@@ -19,7 +19,7 @@ module.exports = grammar({
                 $.create_query,
                 $.interpret_query
             ),
-        //
+
         //tested
         create_query: $ => seq(
             caseInsensitive("create"),
@@ -457,7 +457,7 @@ module.exports = grammar({
 
         step: $ => seq(
             $.step_source_set,
-            optional(seq(
+            repeat(seq(
                 "-", "(",
                 $.step_edge_set,
                 ")", "-", optional('>'),
