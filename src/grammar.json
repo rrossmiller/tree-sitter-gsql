@@ -253,8 +253,11 @@
                   "value": "="
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "digit"
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "digit"
+                  }
                 }
               ]
             },

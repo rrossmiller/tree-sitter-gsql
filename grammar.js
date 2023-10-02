@@ -73,7 +73,7 @@ module.exports = grammar({
         query_param: $ => seq(
             $._type,
             $.name,
-            optional(seq("=", $.digit))
+            optional(seq("=", repeat1($.digit)))
         ),
 
         //tested
