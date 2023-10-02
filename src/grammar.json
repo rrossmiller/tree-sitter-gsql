@@ -1010,10 +1010,6 @@
               "name": "step"
             },
             {
-              "type": "SYMBOL",
-              "name": "step_v2"
-            },
-            {
               "type": "SEQ",
               "members": [
                 {
@@ -1037,6 +1033,10 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "step_v2"
             }
           ]
         }

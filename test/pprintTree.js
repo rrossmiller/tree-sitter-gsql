@@ -20,7 +20,7 @@ function pprintTree(lispTree) {
   return formattedClips;
 }
 
-const t = pprintTree(`
-(gsql (create_query (name) (parameter_list) (name) (query_body (query_body_stmts (query_body_stmt (gsql_select_block (gsql_select_clause (name) (name)) (from_clause (step (step_source_set (name) (name)) (step_edge_set (step_edge_types (atomic_edge_type))) (step_vertex_set (step_vertex_types (atomic_vertex_type (vertex_set_type (name)))) (name))))))) (query_body_stmts (query_body_stmt (gsql_select_block (gsql_select_clause (name) (name)) (from_clause (step (step_source_set (name) (name)) (step_edge_set (step_edge_types (atomic_edge_type (edge_set_type (name)))) (ERROR) (name)) (step_vertex_set (step_vertex_types (atomic_vertex_type (vertex_set_type (name)))) (name))))))) (query_body_stmts (query_body_stmt (gsql_select_block (gsql_select_clause (name) (name)) (from_clause (step (step_source_set (name) (name)))))) (ERROR (UNEXPECTED ':') (UNEXPECTED ')') (UNEXPECTED ':') (UNEXPECTED ';'))))))
-    `);
+const t = pprintTree(`\
+gsql (create_query (name) (parameter_list) (name) (query_body (query_body_stmts (query_body_stmt (gsql_select_block (gsql_select_clause (name) (name)) (from_clause (path_pattern (step_source_set (name) (name)))) (where_clause (condition (expr (constant (string_literal))) (expr (constant (string_literal)))))))))))
+`);
 console.log(t);

@@ -22,19 +22,19 @@ module.exports = grammar({
         //
         //tested
         create_query: $ => seq(
-            caseInsensitive("create"),
+            "CREATE",
             optional(
-                seq(caseInsensitive("or"), caseInsensitive("replace"))
+                seq("OR", "REPLACE")
             ),
-            optional(caseInsensitive("distributed")),
-            caseInsensitive("query"),
+            optional("DISTRIBUTED"),
+            "QUERY",
             field("queryName", $.name),
             $.parameter_list,
-            caseInsensitive("for"),
-            caseInsensitive("graph"),
+            "FOR",
+            "GRAPH",
             field("graphName", $.name),
             optional(
-                seq(caseInsensitive("syntax"), caseInsensitive("v2"))
+                seq("SYNTAX", ("v2"))
             ),
             $.query_body
         ),
@@ -42,14 +42,14 @@ module.exports = grammar({
 
         //tested
         interpret_query: $ => seq(
-            caseInsensitive("interpret"),
-            caseInsensitive("query"),
+            "INTERPRET",
+            "QUERY",
             $.parameter_list,
-            caseInsensitive("for"),
-            caseInsensitive("graph"),
+            "FOR",
+            "GRAPH",
             field("graphName", $.name),
             optional(
-                seq(caseInsensitive("syntax"), caseInsensitive("v2"))
+                seq("SYNTAX", ("v2"))
             ),
             $.query_body
         ),
@@ -88,8 +88,8 @@ module.exports = grammar({
 
         //tested
         typedef: $ => seq(
-            caseInsensitive("typedef"),
-            caseInsensitive("tuple"),
+            "TYPEDEF",
+            "TUPLE",
             "<",
             repeat($.tuple_fields),
             ">",
@@ -111,27 +111,26 @@ module.exports = grammar({
             seq($.name, $.base_type)
         ),
 
-        // tesing...
         query_body_stmts: $ => seq(
             $.query_body_stmt,
             ';'
         ),
 
         query_body_stmt: $ => choice(
-            $.assign_stmt, // tested
-            $.v_set_var_decl_stmt, // tested
-            $.decl_stmt, // tested
-            $.l_accum_assign_stmt, // tested
-            $.g_accum_assign_stmt, // tested
-            $.g_accum_accum_stmt, // tested
-            $.func_call_stmt, // tested
+            $.assign_stmt,
+            $.v_set_var_decl_stmt,
+            $.decl_stmt,
+            $.l_accum_assign_stmt,
+            $.g_accum_assign_stmt,
+            $.g_accum_accum_stmt,
+            $.func_call_stmt,
             $._select_stmt,
             $.query_body_case_stmt,
             $.query_body_if_stmt,
             $.query_body_while_stmt,
             $.query_body_for_each_stmt,
-            caseInsensitive("break"),
-            caseInsensitive("continue"),
+            "BREAK",
+            "CONTINUE",
             // updateStmt ,
             // insertStmt ,
             // queryBodyDeleteStmt ,
@@ -175,7 +174,7 @@ module.exports = grammar({
         //tested
         seed: $ => choice(
             "_",
-            caseInsensitive("any"),
+            "ANY",
             $.name,
             $.global_accum_name,
             seq($.name, ".*"),
@@ -186,7 +185,7 @@ module.exports = grammar({
         simple_set: $ => prec.left(1, choice(
             $.name,
             seq("(", $.simple_set, ")"),
-            seq($.simple_set, choice(caseInsensitive("union"), caseInsensitive("intersect"), caseInsensitive("minus")), $.simple_set)
+            seq($.simple_set, choice("UNION", "INTERSECT", "MINUS"), $.simple_set)
         )),
 
         //tested
@@ -243,8 +242,8 @@ module.exports = grammar({
             $.gsql_select_clause,
             $.from_clause,
             // optional($.sample_clause),
-            optional($.where_clause), 
-            optional($.accum_clause), // testing 
+            optional($.where_clause),
+            optional($.accum_clause),
             repeat($.post_accum_clause),
             // optional($.having_clause),
             // optional($.order_clause),
@@ -254,27 +253,28 @@ module.exports = grammar({
         gsql_select_clause: $ => seq(
             $.name,
             "=",
-            caseInsensitive("select"),
+            "SELECT",
             field("alias", $.name)
         ),
 
         from_clause: $ => seq(
-            caseInsensitive("from"),
+            "FROM",
             choice(
                 $.step,
+                // path pattern and v2 can probs be treated as the same
                 seq($.path_pattern, repeat(seq(",", $.path_pattern))),
-                $.step_v2, // this could probably be integrated into path pattern
+                $.step_v2,
             )
         ),
 
         where_clause: $ => seq(
-            caseInsensitive("where"),
+            "WHERE",
             $.condition
         ),
 
         accum_clause: $ => seq(
             // optinal(perClauseV2),
-            caseInsensitive("accum"),
+            "ACCUM",
             $.dml_sub_stmt_list
         ),
         dml_sub_stmt_list: $ => seq(
@@ -294,8 +294,8 @@ module.exports = grammar({
             $.dml_sub_if_stmt,
             $.dml_sub_while_stmt,
             $.dml_sub_for_each_stmt,
-            caseInsensitive("break"),
-            caseInsensitive("continue"),
+            "BREAK",
+            "CONTINUE",
             // insertStmt,
             // dmlSubDeleteStmt,
             // printlnStmt,
@@ -337,46 +337,46 @@ module.exports = grammar({
             $.expr
         ),
         dml_sub_if_stmt: $ => prec.left(1, seq(
-            caseInsensitive("if"),
+            "IF",
             $.condition,
-            caseInsensitive("then"),
+            "THEN",
             $.dml_sub_stmt_list,
-            repeat(seq(caseInsensitive("else"), caseInsensitive("if"), $.condition, caseInsensitive("then"), $.dml_sub_stmt_list)),
-            optional(seq(caseInsensitive("else"), $.dml_sub_stmt_list)),
-            caseInsensitive("end")
+            repeat(seq("ELSE", "IF", $.condition, "THEN", $.dml_sub_stmt_list)),
+            optional(seq("ELSE", $.dml_sub_stmt_list)),
+            "END"
         )),
 
         dml_sub_case_stmt: $ => choice(
             seq(
-                caseInsensitive("case"),
-                repeat1(seq(caseInsensitive("when"), $.condition, caseInsensitive("then"), $.dml_sub_stmt_list)),
-                optional(seq(caseInsensitive("else"), $.dml_sub_stmt_list)),
-                caseInsensitive("end")
+                "CASE",
+                repeat1(seq("WHEN", $.condition, "THEN", $.dml_sub_stmt_list)),
+                optional(seq("ELSE", $.dml_sub_stmt_list)),
+                "END"
             ),
             seq(
-                caseInsensitive("case"),
+                "CASE",
                 $.expr,
-                repeat1(seq(caseInsensitive("when"), $.constant, caseInsensitive("then"), $.dml_sub_stmt_list)),
-                optional(seq(caseInsensitive("else"), $.dml_sub_stmt_list)),
-                caseInsensitive("end")
+                repeat1(seq("WHEN", $.constant, "THEN", $.dml_sub_stmt_list)),
+                optional(seq("ELSE", $.dml_sub_stmt_list)),
+                "END"
             )
         ),
 
         dml_sub_while_stmt: $ => seq(
-            caseInsensitive("while"),
+            "WHILE",
             $.condition,
-            optional(seq(caseInsensitive("limit"), $.simple_size)),
-            caseInsensitive("do"),
+            optional(seq("LIMIT", $.simple_size)),
+            "DO",
             $.dml_sub_stmt_list,
-            caseInsensitive("end")
+            "END"
         ),
 
         dml_sub_for_each_stmt: $ => seq(
-            caseInsensitive("foreach"),
+            "FOREACH",
             $.for_each_control,
-            caseInsensitive("do"),
+            "DO",
             $.dml_sub_stmt_list,
-            caseInsensitive("end")
+            "END"
         ),
 
         for_each_control: $ => choice(
@@ -385,30 +385,30 @@ module.exports = grammar({
                     field("iterationVar", choice($.name, $.local_accum_name, $.global_accum_name)),
                     seq("(", field("keyVar", $.name), repeat1(seq(",", field("valueVar", $.name))), ")")
                 ),
-                seq(choice(caseInsensitive("in"), ":"), $.set_bag_expr)
+                seq(choice("IN", ":"), $.set_bag_expr)
             ),
             seq(
                 field("iterationVar", choice($.name, $.local_accum_name, $.global_accum_name)),
-                caseInsensitive("in"),
-                caseInsensitive("range"),
+                "IN",
+                "RANGE",
                 "[",
                 $.expr,
                 ",",
                 $.expr,
                 "]",
-                optional(seq(".", caseInsensitive("step"), "(", $.expr, ")")))
+                optional(seq(".", "STEP", "(", $.expr, ")")))
         ),
 
         post_accum_clause: $ => seq(
-            caseInsensitive("post-accum"),
+            ("post-accum"),
             $.dml_sub_stmt_list
         ),
         limit_clause: $ => seq(
-            caseInsensitive("limit"),
+            "LIMIT",
             choice(
                 $.expr,
                 seq($.expr, ",", $.expr),
-                seq($.expr, caseInsensitive("offset"), $.expr)
+                seq($.expr, "OFFSET", $.expr)
             )
         ),
 
@@ -455,6 +455,7 @@ module.exports = grammar({
             ))
         ),
 
+        //BOOK: currently working on v2 testing
         step_v2: $ => seq(
             $.step_vertex_set,
             optional(seq("-", "(", $.step_edge_set, ")", "-", $.step_vertex_set))
@@ -477,7 +478,7 @@ module.exports = grammar({
 
         atomic_edge_type: $ => choice(
             "_",
-            caseInsensitive("any"),
+            "ANY",
             $.edge_set_type
         ),
 
@@ -497,7 +498,7 @@ module.exports = grammar({
         ),
         atomic_vertex_type: $ => choice(
             "_",
-            caseInsensitive("any"),
+            "ANY",
             $.vertex_set_type
         ),
         vertex_set_type: $ => choice(
@@ -507,57 +508,57 @@ module.exports = grammar({
 
         query_body_case_stmt: $ => choice(
             seq(
-                caseInsensitive("case"),
-                repeat1(seq(caseInsensitive("when"), $.condition, caseInsensitive("then"), $.query_body_stmts)),
-                optional(seq(caseInsensitive("else"), $.query_body_stmts)),
-                caseInsensitive("end")
+                "CASE",
+                repeat1(seq("WHEN", $.condition, "THEN", $.query_body_stmts)),
+                optional(seq("ELSE", $.query_body_stmts)),
+                "END"
             ),
             seq(
-                caseInsensitive("case"),
+                "CASE",
                 $.expr,
-                repeat1(seq(caseInsensitive("when"), $.constant, caseInsensitive("then"), $.query_body_stmts)),
-                optional(seq(caseInsensitive("else"), $.query_body_stmts)),
-                caseInsensitive("end")
+                repeat1(seq("WHEN", $.constant, "THEN", $.query_body_stmts)),
+                optional(seq("ELSE", $.query_body_stmts)),
+                "END"
             ),
         ),
 
         query_body_if_stmt: $ => prec.left(1, seq(
-            caseInsensitive("if"),
+            "IF",
             $.condition,
-            caseInsensitive("then"),
+            "THEN",
             $.query_body_stmts,
             repeat(seq(
-                caseInsensitive("else"),
-                caseInsensitive("if"),
+                "ELSE",
+                "IF",
                 $.condition,
-                caseInsensitive("then"),
+                "THEN",
                 $.query_body_stmts
             )),
-            optional(seq(caseInsensitive("else"), $.query_body_stmts)),
-            caseInsensitive("end")
+            optional(seq("ELSE", $.query_body_stmts)),
+            "END"
         )),
 
         query_body_while_stmt: $ => seq(
-            caseInsensitive("while"),
+            "WHILE",
             $.condition,
-            optional(seq(caseInsensitive("limit"), $.simple_size)),
-            caseInsensitive("do"),
+            optional(seq("LIMIT", $.simple_size)),
+            "DO",
             $.query_body_stmts,
-            caseInsensitive("end")
+            "END"
         ),
 
         query_body_for_each_stmt: $ => seq(
-            caseInsensitive("foreach"),
+            "FOREACH",
             $.for_each_control,
-            caseInsensitive("do"),
+            "DO",
             $.query_body_stmts,
-            caseInsensitive("end")
+            "END"
         ),
 
 
         install_query: $ => seq(
-            caseInsensitive("install"),
-            caseInsensitive("query"),
+            "INSTALL",
+            "QUERY",
             choice("*", "all", seq($.name, repeat(seq(",", $.name))))
         ),
 
@@ -593,22 +594,22 @@ module.exports = grammar({
         //tested
         accum_type: $ => choice(
             seq(
-                caseInsensitive("sumAccum"), "<", choice(caseInsensitive("int"), caseInsensitive("float"), caseInsensitive("double"), caseInsensitive("string")), ">"
+                ("sumAccum"), "<", choice("INT", "FLOAT", "DOUBLE", "STRING"), ">"
             ),
-            seq(caseInsensitive("maxaccum"), "<", choice(caseInsensitive("int"), caseInsensitive("float"), caseInsensitive("double")), ">"),
-            seq(caseInsensitive("minaccum"), "<", choice(caseInsensitive("int"), caseInsensitive("float"), caseInsensitive("double")), ">"),
-            caseInsensitive("avgaccum"),
-            caseInsensitive("oraccum"),
-            caseInsensitive("andaccum"),
-            caseInsensitive("bitwiseoraccum"),
-            caseInsensitive("bitwiseandaccum"),
-            seq(caseInsensitive("listaccum"), "<", $._type, ">"),
-            seq(caseInsensitive("setaccum"), "<", $._element_type, ">"),
-            seq(caseInsensitive("bagaccum"), "<", $._element_type, ">"),
-            seq(caseInsensitive("mapaccum"), "<", $._element_type, ",", choice($.base_type, $.accum_type, $.name), ">"),
-            seq(caseInsensitive("heapaccum"), "<", $.name, ">", "(", repeat1($.digit), ",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")), repeat(seq(",", $.name, choice(caseInsensitive("asc"), caseInsensitive("desc")))), ")"),
-            seq(caseInsensitive("groupbyaccum"), "<", $._element_type, $.name, repeat(seq(",", $._element_type, $.name)), ",", $.accum_type, $.name, repeat(seq(",", $.accum_type, $.name)), ">"),
-            seq(caseInsensitive("arrayaccum"), "<", $.name, ">")
+            seq("MAXACCUM", "<", choice("INT", "FLOAT", "DOUBLE"), ">"),
+            seq("MINACCUM", "<", choice("INT", "FLOAT", "DOUBLE"), ">"),
+            "AVGACCUM",
+            "ORACCUM",
+            "ANDACCUM",
+            "BITWISEORACCUM",
+            "BITWISEANDACCUM",
+            seq("LISTACCUM", "<", $._type, ">"),
+            seq("SETACCUM", "<", $._element_type, ">"),
+            seq("BAGACCUM", "<", $._element_type, ">"),
+            seq("MAPACCUM", "<", $._element_type, ",", choice($.base_type, $.accum_type, $.name), ">"),
+            seq("HEAPACCUM", "<", $.name, ">", "(", repeat1($.digit), ",", $.name, choice("ASC", "DESC"), repeat(seq(",", $.name, choice("ASC", "DESC"))), ")"),
+            seq("GROUPBYACCUM", "<", $._element_type, $.name, repeat(seq(",", $._element_type, $.name)), ",", $.accum_type, $.name, repeat(seq(",", $.accum_type, $.name)), ">"),
+            seq("ARRAYACCUM", "<", $.name, ">")
         ),
 
         //tested
@@ -640,13 +641,13 @@ module.exports = grammar({
             // seq($.name, ".", $.local_accum_name),
             $.name_dot,
             seq($.name, ".", $.name, ".", $.name, "(", optional($.arg_list), ")"),
-            seq($.name, ".", $.name, "(", optional($.arg_list), ")", optional(seq(".", caseInsensitive("filter"), "(", $.condition, ")"))),
+            seq($.name, ".", $.name, "(", optional($.arg_list), ")", optional(seq(".", "FILTER", "(", $.condition, ")"))),
             // seq($.name, optional(seq("<", $._type, repeat(seq(",", $._type)), ">")), "(", optional(seq($.arg_list, ")"))),
             // seq($.name, ".", $.local_accum_name, repeat1(seq(".", $.name, "(", optional($.arg_list), ")")), optional(seq(".", $.name))),
             // seq($.global_accum_name, repeat1(seq(".", $.name, "(", optional($.arg_list), ")")), optional(seq(".", $.name))),
-            seq(caseInsensitive("coalesce"), "(", optional($.arg_list), ")"),
-            seq($.aggregator, "(", optional(caseInsensitive("distinct")), $.set_bag_expr, ")"),
-            seq(caseInsensitive("isempty"), "(", $.set_bag_expr, ")"),
+            seq("COALESCE", "(", optional($.arg_list), ")"),
+            seq($.aggregator, "(", optional("DISTINCT"), $.set_bag_expr, ")"),
+            seq("ISEMPTY", "(", $.set_bag_expr, ")"),
             prec.left(2, seq($.expr, $.math_operator, $.expr)),
             prec.left(1, seq("-", $.expr)),
             seq("(", $.expr, ")"),
@@ -660,14 +661,14 @@ module.exports = grammar({
         condition: $ => prec.left(1, choice(
             $.expr,
             seq($.expr, $.comparison_operator, $.expr),
-            seq($.expr, optional(caseInsensitive("not")), caseInsensitive("in"), $.set_bag_expr),
-            seq($.expr, caseInsensitive("is"), optional(caseInsensitive("not")), caseInsensitive("null")),
-            seq($.expr, caseInsensitive("between"), $.expr, caseInsensitive("and"), $.expr),
+            seq($.expr, optional("NOT"), "IN", $.set_bag_expr),
+            seq($.expr, "IS", optional("NOT"), "NULL"),
+            seq($.expr, "BETWEEN", $.expr, "AND", $.expr),
             seq("(", $.condition, ")"),
-            seq(caseInsensitive("not"), $.condition),
-            seq($.condition, choice(caseInsensitive("and"), caseInsensitive("or")), $.condition),
-            choice(caseInsensitive("true"), caseInsensitive("false")),
-            seq($.expr, optional(caseInsensitive("not")), caseInsensitive("like"), $.expr)
+            seq("NOT", $.condition),
+            seq($.condition, choice("AND", "OR"), $.condition),
+            choice("TRUE", "FALSE"),
+            seq($.expr, optional("NOT"), "LIKE", $.expr)
         )),
 
         set_bag_expr: $ => prec.left(0, choice(
@@ -677,9 +678,9 @@ module.exports = grammar({
             // seq($.name, ".", $.local_accum_name),
             $.name_dot,
             seq($.name_dot, repeat(seq(".", $.name, "(", optional($.arg_list), ")"))),
-            // seq($.name, ".", $.name, "(", optional($.arg_list), ")", optional(seq(".", caseInsensitive("filter"), "(", $.condition, ")"))),
+            // seq($.name, ".", $.name, "(", optional($.arg_list), ")", optional(seq(".", "FILTER", "(", $.condition, ")"))),
             // seq($.global_accum_name, repeat(seq(".", $.name, "(", optional($.arg_list), ")"))),
-            seq($.set_bag_expr, choice(caseInsensitive("union"), caseInsensitive("intersect"), caseInsensitive("minus")), $.set_bag_expr),
+            seq($.set_bag_expr, choice("UNION", "INTERSECT", "MINUS"), $.set_bag_expr),
             seq("(", $.arg_list, ")"),
             seq("(", $.set_bag_expr, ")")
         )),
@@ -692,25 +693,25 @@ module.exports = grammar({
         )),
 
         aggregator: $ => seq(
-            caseInsensitive("count"),
-            caseInsensitive("max"),
-            caseInsensitive("min"),
-            caseInsensitive("avg"),
-            caseInsensitive("sum")
+            "COUNT",
+            "MAX",
+            "MIN",
+            "AVG",
+            "SUM"
         ),
 
         print_stmt: $ => prec(1, seq(
-            caseInsensitive("print"),
+            "PRINT",
             $.print_expr,
             repeat(seq(",", $.print_expr)),
-            optional(seq(caseInsensitive("where"), $.condition)),
-            optional(seq(caseInsensitive("to_csv"), choice($.file_path, $.name)))
+            optional(seq("WHERE", $.condition)),
+            optional(seq(("to_csv"), choice($.file_path, $.name)))
         )),
 
         print_expr: $ => choice(
             seq(
                 choice($.expr, $.v_expr_set),
-                optional(seq(caseInsensitive("as"), $.name))
+                optional(seq("AS", $.name))
             ),
             // tableName
         ),
@@ -725,7 +726,7 @@ module.exports = grammar({
 
         v_set_proj: $ => seq(
             $.expr,
-            optional(seq(caseInsensitive("as"), $.name))
+            optional(seq("AS", $.name))
         ),
 
         file_path: $ => choice(
@@ -742,18 +743,18 @@ module.exports = grammar({
         ),
 
         base_type: $ => choice(
-            caseInsensitive("bool"),
-            caseInsensitive("int"),
-            caseInsensitive("uint"),
-            caseInsensitive("float"),
-            caseInsensitive("double"),
-            caseInsensitive("string"),
-            caseInsensitive("bool"),
-            seq(caseInsensitive("vertex"), optional(seq("<", $.name, ">"))),
-            caseInsensitive("edge"),
-            caseInsensitive("jsonobject"),
-            caseInsensitive("jsonarray"),
-            caseInsensitive("datetime")
+            "BOOL",
+            "INT",
+            "UINT",
+            "FLOAT",
+            "DOUBLE",
+            "STRING",
+            "BOOL",
+            seq("VERTEX", optional(seq("<", $.name, ">"))),
+            "EDGE",
+            "JSONOBJECT",
+            "JSONARRAY",
+            "DATETIME"
         ),
 
         name: $ => /[\p{L}_$][\p{L}\p{Nd}_$]*/, // thanks, java --> https://github.com/tree-sitter/tree-sitter-java/blob/master/grammar.js#:~:text=%5B%5Cp%7BL%7D_%24%5D%5B%5Cp%7BL%7D%5Cp%7BNd%7D_%24%5D*
@@ -765,11 +766,11 @@ module.exports = grammar({
         constant: $ => choice(
             $.numeric,
             $.string_literal,
-            caseInsensitive("true"),
-            caseInsensitive("false"),
-            caseInsensitive("gsql_uint_max"),
-            caseInsensitive("gsql_int_max"),
-            caseInsensitive("gsql_uint_min"),
+            "TRUE",
+            "FALSE",
+            ("gsql_uint_max"),
+            ("gsql_int_max"),
+            ("gsql_uint_min"),
         ),
 
         numeric: $ => choice(
