@@ -118,9 +118,9 @@ module.exports = grammar({
         ),
 
         query_body_stmt: $ => choice(
+            $.decl_stmt, // tested
             $.assign_stmt, // tested
             $.v_set_var_decl_stmt, // tested
-            $.decl_stmt, // tested
             $.l_accum_assign_stmt, // tested
             $.g_accum_assign_stmt, // tested
             $.g_accum_accum_stmt, // tested
@@ -602,9 +602,7 @@ module.exports = grammar({
 
         //tested
         accum_type: $ => choice(
-            seq(
-                caseInsensitive("sumAccum"), "<", choice(caseInsensitive("int"), caseInsensitive("float"), caseInsensitive("double"), caseInsensitive("string")), ">"
-            ),
+            seq( caseInsensitive("sumAccum"), "<", choice(caseInsensitive("int"), caseInsensitive("float"), caseInsensitive("double"), caseInsensitive("string")), ">"),
             seq(caseInsensitive("maxaccum"), "<", choice(caseInsensitive("int"), caseInsensitive("float"), caseInsensitive("double")), ">"),
             seq(caseInsensitive("minaccum"), "<", choice(caseInsensitive("int"), caseInsensitive("float"), caseInsensitive("double")), ">"),
             caseInsensitive("avgaccum"),
@@ -612,7 +610,9 @@ module.exports = grammar({
             caseInsensitive("andaccum"),
             caseInsensitive("bitwiseoraccum"),
             caseInsensitive("bitwiseandaccum"),
-            seq(caseInsensitive("listaccum"), "<", $._type, ">"),
+            seq(caseInsensitive("listaccum"), "<", choice($._element_type, $.accum_type), ">"),
+            // seq(caseInsensitive("listaccum"), "<", choice($.base_type, $.accum_type, $.name), ">"),
+            // seq(caseInsensitive("setaccum"), "<", choice($._element_type,$.accum_type), ">"),
             seq(caseInsensitive("setaccum"), "<", $._element_type, ">"),
             seq(caseInsensitive("bagaccum"), "<", $._element_type, ">"),
             seq(caseInsensitive("mapaccum"), "<", $._element_type, ",", choice($.base_type, $.accum_type, $.name), ">"),
@@ -758,7 +758,6 @@ module.exports = grammar({
             caseInsensitive("float"),
             caseInsensitive("double"),
             caseInsensitive("string"),
-            // caseInsensitive("bool"),
             seq(caseInsensitive("vertex"), optional(seq("<", $.name, ">"))),
             caseInsensitive("edge"),
             caseInsensitive("jsonobject"),

@@ -21,10 +21,7 @@
         "url": "https://github.com/rrossmiller/tree-sitter-gsql"
     },
     "dependencies": {
-        "nan": "^2.12.1"
-    },
-    "devDependencies": {
-        "tree-sitter-cli": "^0.20.10"
+        "nan": "^2.18.0"
     },
     "tree-sitter": [
         {
@@ -33,5 +30,8 @@
                 "gsql"
             ]
         }
-    ]
+    ],
+    "devDependencies": {
+        "tree-sitter-cli": "^0.20.8"
+    }
 }
