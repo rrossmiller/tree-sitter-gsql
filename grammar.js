@@ -245,7 +245,7 @@ module.exports = grammar({
             // optional($.sample_clause),
             optional($.where_clause), 
             optional($.accum_clause), 
-            repeat($.post_accum_clause),  // testing 
+            repeat($.post_accum_clause),  
             // optional($.having_clause),
             // optional($.order_clause),
             optional($.limit_clause),
